@@ -14,6 +14,8 @@ export const KINDS = {
   dp100In:   { metric: ["kPa/100 m", id, id], imperial: ["psi/100 ft", (v) => v * 0.0442075, (v) => v / 0.0442075] },
   speedIn:   { metric: ["m/s", id, id], imperial: ["ft/s", (v) => v * 3.28084, (v) => v / 3.28084] },
   tankP:     { metric: ["kPag", id, id], imperial: ["oz/in²", (v) => (v / KPA_PER_PSI) * 16, (v) => (v / 16) * KPA_PER_PSI] },
+  rateMm:    { metric: ["mm/yr", id, id], imperial: ["mpy", (v) => v * 39.3701, (v) => v / 39.3701] },
+  pct:       { metric: ["%", id, id], imperial: ["%", id, id] },
   airStd:    { metric: ["Sm³/h", id, id], imperial: ["SCFM", (v) => (v * 35.3147) / 60, (v) => (v * 60) / 35.3147] },
   thickMm:   { metric: ["mm", id, id], imperial: ["in", (v) => v / 25.4, (v) => v * 25.4] },
   none:      { metric: ["", id, id], imperial: ["", id, id] },
@@ -39,6 +41,8 @@ export const KINDS = {
   lengthFt:  { metric: ["m", (v) => v * 0.3048], imperial: ["ft", id] },
   speedMs:   { metric: ["m/s", id], imperial: ["ft/s", (v) => v * 3.28084] },
   psiTank:   { metric: ["kPag", (v) => v * KPA_PER_PSI], imperial: ["oz/in²", (v) => v * 16] },
+  stressKpa: { metric: ["MPa", (v) => v / 1000], imperial: ["psi", (v) => v / KPA_PER_PSI] },
+  years:     { metric: ["yr", id], imperial: ["yr", id] },
   scfh:      { metric: ["Sm³/h", (v) => v / 35.3147], imperial: ["SCFM", (v) => v / 60] },
 };
 

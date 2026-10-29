@@ -77,7 +77,8 @@ function buildForm() {
       const u = f.unit ?? (f.kind ? unit(f.kind, sys) : "");
       h += `<div class="field"><label for="in-${f.id}">${f.label}<span class="u">${u}</span></label>`;
       if (f.options) {
-        h += `<select id="in-${f.id}" data-f="${f.id}">${f.options.map(([v, l]) =>
+        const opts = typeof f.options === "function" ? f.options(S) : f.options;
+        h += `<select id="in-${f.id}" data-f="${f.id}">${opts.map(([v, l]) =>
           `<option value="${v}" ${String(S[f.id]) === String(v) ? "selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
       } else {
         h += `<input id="in-${f.id}" data-f="${f.id}" type="text" inputmode="decimal" value="${fieldValue(f)}" aria-describedby="err-${f.id}">`;
@@ -95,6 +96,7 @@ function onInput(e) {
   if (el.id === "in-case") {
     const i = +el.value; if (i < 0) return;
     S = { ...calc.defaults, ...calc.examples[i][1] };
+    if (calc.normalize) S = calc.normalize(S);
     lastFx = ""; buildForm(); render(); return;
   }
   const f = fieldDef(el.dataset.f); if (!f) return;
@@ -124,7 +126,8 @@ function onInput(e) {
   }
   if (Object.keys(errs).length) return; // keep last valid result
   S = draft;
-  if (f.options && calc.inputs.some((g) => g.fields.some((x) => x.show))) { buildForm(); render(); return; }
+  if (calc.normalize) S = calc.normalize(S);
+  if (f.options && calc.inputs.some((g) => g.fields.some((x) => x.show || typeof x.options === "function"))) { buildForm(); render(); return; }
   const caseSel = $("in-case");
   if (caseSel && caseSel.value !== "-1") { // mark as custom without rebuilding the form
     caseSel.insertAdjacentHTML("afterbegin", `<option value="-1">Custom</option>`); caseSel.value = "-1";
@@ -163,7 +166,9 @@ document.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click
 
 /* ---------- Chart: tap a bar to pick that NPS ---------- */
 function pickBar(g) {
-  S = { ...S, nps: +g.dataset.nps };
+  // bars set NPS by default, or any input via data-key / data-val
+  S = g.dataset.key ? { ...S, [g.dataset.key]: g.dataset.num ? +g.dataset.val : g.dataset.val } : { ...S, nps: +g.dataset.nps };
+  if (calc.normalize) S = calc.normalize(S);
   buildForm(); render();
 }
 $("chart").addEventListener("click", (e) => { const g = e.target.closest(".bar"); if (g) pickBar(g); });

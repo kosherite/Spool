@@ -12,6 +12,7 @@ Oil and gas facilities engineering calculators, each with a live diagram of the 
 | PIP-04 | Flowline Sizing | Isothermal gas, Darcy, Beggs & Brill (marched), CSA Z662, API RP 14E |
 | PIP-05 | Reducer and Expansion | Hooper (1988) 2-K, Weisbach vena contracta, API RP 14E |
 | PIP-06 | Gooseneck Flow | Darcy–Weisbach with Hooper 2-K, GPSA Eq. 17-28 (Spitzglass), API 12F |
+| PIP-07 | B31.3 Pipe Stress | ASME B31.3 304.1.2, Table A-1, 345.4.2, B16.5, B36.10M |
 
 ## Run
 
