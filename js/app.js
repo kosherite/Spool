@@ -36,6 +36,7 @@ function render() {
   const ch = calc.chart(S, R, sys);
   $("chart").innerHTML = ch.svg;
   $("chartCap").textContent = ch.caption;
+  $("chartTitle").textContent = ch.title || "Velocity by NPS";
 
   const word = { ok: "OK", warn: "Warn", bad: "Fail", na: "—" };
   $("checks").innerHTML = calc.checkRows(S, R, list, sys).map((c) =>

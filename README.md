@@ -9,6 +9,7 @@ Oil and gas facilities engineering calculators, each with a live diagram of the 
 | PIP-01 | Gas Line Sizing | Crane TP-410, API RP 14E, ASME B31.3, B16.5 |
 | PIP-02 | Liquid Line Sizing | Crane TP-410, Colebrook, Hooper 2-K, API RP 14E, ASME B31.3, B16.5 |
 | PIP-03 | 2-Phase Line Sizing | Beggs & Brill (1973), API RP 14E, ASME B31.3, B16.5 |
+| PIP-04 | Flowline Sizing | Isothermal gas, Darcy, Beggs & Brill (marched), CSA Z662, API RP 14E |
 
 ## Run
 
