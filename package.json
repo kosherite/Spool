@@ -1,0 +1,10 @@
+{
+  "name": "spool",
+  "private": true,
+  "type": "module",
+  "description": "Oil and gas facilities engineering calculators.",
+  "scripts": {
+    "test": "node --test",
+    "start": "python3 -m http.server 8080"
+  }
+}

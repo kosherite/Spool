@@ -1,1 +1,49 @@
 # Spool
+
+Oil and gas facilities engineering calculators, each with a live diagram of the system it sizes.
+
+## Calculators
+
+| Code   | Calculator      | Standards                                   |
+|--------|-----------------|---------------------------------------------|
+| PIP-01 | Gas Line Sizing | Crane TP-410, API RP 14E, ASME B31.3, B16.5 |
+
+## Run
+
+Static site, no build step. Serve the folder over HTTP (ES modules don't load from `file://`):
+
+```sh
+python3 -m http.server 8080   # then open http://localhost:8080
+```
+
+Works as-is on GitHub Pages.
+
+## Test
+
+```sh
+npm test   # Node 18+, no dependencies
+```
+
+Each calculator is checked against the worked values in its source workbook.
+
+## Structure
+
+```
+index.html                 app shell markup
+css/spool.css              theme tokens and layout
+js/app.js                  search, panel, settings, canvas loop
+js/lib/                    shared units, formatting, pipe data
+js/calcs/registry.js       catalogue and live calculators
+js/calcs/<calc>/calc.js    pure calculation (no DOM)
+js/calcs/<calc>/view.js    inputs, results, equations
+js/calcs/<calc>/scene.js   canvas diagram
+tests/                     node:test verification
+```
+
+Equations are typeset with [KaTeX](https://katex.org) (MathML output, loaded from cdnjs).
+
+## Adding a calculator
+
+1. Create `js/calcs/<id>/` with `calc.js`, `view.js` and `scene.js`, following `gas-line-sizing`.
+2. Register the view in `LIVE` in `js/calcs/registry.js`.
+3. Add `tests/<id>.test.mjs` with values from the source workbook.

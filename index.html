@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spool</title>
+<meta name="description" content="Oil and gas facilities engineering calculators.">
+<meta name="theme-color" content="#14213d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2314213d'/%3E%3Crect x='7' y='14' width='18' height='5' rx='2.5' fill='%23fff'/%3E%3Ccircle cx='24' cy='8' r='3.5' fill='%23f0b54a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/spool.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</head>
+<body>
+<canvas id="scene" role="img" aria-label="System diagram"></canvas>
+
+<header class="topbar">
+  <a class="card brand" href="./" aria-label="Spool"><span class="mark" aria-hidden="true"></span><span class="name">Spool</span></a>
+  <div class="search" id="searchWrap">
+    <div class="card search-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="suggest" aria-autocomplete="list" aria-label="Search calculators">
+      <kbd>/</kbd>
+    </div>
+    <div class="card suggest" id="suggest" role="listbox" hidden></div>
+  </div>
+  <button class="card icon-btn" id="setBtn" aria-label="Settings" aria-expanded="false" aria-controls="pop">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+  </button>
+</header>
+
+<div class="card popover" id="pop" hidden>
+  <div class="seg" role="tablist" aria-label="Units">
+    <button role="tab" id="uMetric" data-sys="metric" aria-selected="true">Metric</button>
+    <button role="tab" id="uImperial" data-sys="imperial" aria-selected="false">Imperial</button>
+  </div>
+  <div class="checks">
+    <label class="check"><input type="checkbox" id="lyFlow" checked> Flow</label>
+    <label class="check"><input type="checkbox" id="lyDims" checked> Dimensions</label>
+    <label class="check"><input type="checkbox" id="lyProfile"> Velocity profile</label>
+  </div>
+  <p class="fine" id="popNote"></p>
+  <button class="link" id="resetBtn">Reset inputs</button>
+</div>
+
+<aside class="card panel" id="panel" aria-labelledby="pTitle">
+  <button class="grab" id="grab" aria-label="Resize"><span></span></button>
+  <div class="panel-scroll" id="pscroll">
+    <div class="p-head">
+      <div class="p-title"><span class="id" id="pCode"></span><h1 id="pTitle"></h1></div>
+      <div class="p-actions">
+        <button class="ghost" id="expBtn" aria-label="Expand"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></button>
+        <button class="ghost" id="closeBtn" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+    </div>
+    <div class="context" id="pCtx"></div>
+    <div class="pill" id="pill"><span class="dot"></span><span id="pillTxt"></span></div>
+    <div class="seg" role="tablist" aria-label="View">
+      <button role="tab" id="tab-res" data-tab="res" aria-selected="true" aria-controls="vRes">Results</button>
+      <button role="tab" id="tab-in" data-tab="in" aria-selected="false" aria-controls="vIn">Inputs</button>
+      <button role="tab" id="tab-eq" data-tab="eq" aria-selected="false" aria-controls="vEq">Method</button>
+    </div>
+    <div class="kpis" id="kpis"></div>
+
+    <section id="vRes" class="view" role="tabpanel" aria-labelledby="tab-res">
+      <figure class="chart"><figcaption class="sect-h"><span>Velocity by NPS</span><span id="chartCap"></span></figcaption><div id="chart"></div></figure>
+      <table class="checks-t"><thead><tr><th>Check</th><th>Value</th><th>Limit</th><th></th></tr></thead><tbody id="checks"></tbody></table>
+      <dl class="kv" id="kv"></dl>
+    </section>
+
+    <section id="vIn" class="view" role="tabpanel" aria-labelledby="tab-in" hidden>
+      <form class="form" id="form" autocomplete="off" novalidate></form>
+    </section>
+
+    <section id="vEq" class="view" role="tabpanel" aria-labelledby="tab-eq" hidden>
+      <div class="eqs" id="eqs"></div>
+      <table class="sym" id="sym"></table>
+    </section>
+
+    <p class="foot" id="foot"></p>
+  </div>
+</aside>
+
+<div class="ctrls" id="ctrls">
+  <button class="card round" id="zIn" aria-label="Zoom in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button class="card round" id="zOut" aria-label="Zoom out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+  <button class="card round" id="zFit" aria-label="Recenter"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
+  <button class="card round" id="play" aria-label="Pause"><svg id="playIco" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>
