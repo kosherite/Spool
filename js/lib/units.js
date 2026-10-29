@@ -13,6 +13,8 @@ export const KINDS = {
   lengthKm:  { metric: ["km", id, id], imperial: ["mi", (v) => v / 1.609344, (v) => v * 1.609344] },
   dp100In:   { metric: ["kPa/100 m", id, id], imperial: ["psi/100 ft", (v) => v * 0.0442075, (v) => v / 0.0442075] },
   speedIn:   { metric: ["m/s", id, id], imperial: ["ft/s", (v) => v * 3.28084, (v) => v / 3.28084] },
+  tankP:     { metric: ["kPag", id, id], imperial: ["oz/in²", (v) => (v / KPA_PER_PSI) * 16, (v) => (v / 16) * KPA_PER_PSI] },
+  airStd:    { metric: ["Sm³/h", id, id], imperial: ["SCFM", (v) => (v * 35.3147) / 60, (v) => (v * 60) / 35.3147] },
   thickMm:   { metric: ["mm", id, id], imperial: ["in", (v) => v / 25.4, (v) => v * 25.4] },
   none:      { metric: ["", id, id], imperial: ["", id, id] },
   count:     { metric: ["", id, id], imperial: ["", id, id] },
@@ -36,6 +38,8 @@ export const KINDS = {
   stressPsi: { metric: ["MPa", (v) => v / 145.0377], imperial: ["psi", id] },
   lengthFt:  { metric: ["m", (v) => v * 0.3048], imperial: ["ft", id] },
   speedMs:   { metric: ["m/s", id], imperial: ["ft/s", (v) => v * 3.28084] },
+  psiTank:   { metric: ["kPag", (v) => v * KPA_PER_PSI], imperial: ["oz/in²", (v) => v * 16] },
+  scfh:      { metric: ["Sm³/h", (v) => v / 35.3147], imperial: ["SCFM", (v) => v / 60] },
 };
 
 export const unit = (kind, sys) => KINDS[kind][sys][0];
