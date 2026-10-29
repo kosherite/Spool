@@ -12,6 +12,11 @@ export const KINDS = {
   lengthM:   { metric: ["m", id, id], imperial: ["ft", (v) => v * 3.28084, (v) => v / 3.28084] },
   thickMm:   { metric: ["mm", id, id], imperial: ["in", (v) => v / 25.4, (v) => v * 25.4] },
   none:      { metric: ["", id, id], imperial: ["", id, id] },
+  count:     { metric: ["", id, id], imperial: ["", id, id] },
+  liqFlow:   { metric: ["m³/d", id, id], imperial: ["bbl/d", (v) => v * 6.289811, (v) => v / 6.289811] },
+  densKg:    { metric: ["kg/m³", id, id], imperial: ["lb/ft³", (v) => v / 16.01846, (v) => v * 16.01846] },
+  dpKpa:     { metric: ["kPa", id, id], imperial: ["psi", (v) => v / KPA_PER_PSI, (v) => v * KPA_PER_PSI] },
+  modGpa:    { metric: ["GPa", id, id], imperial: ["ksi", (v) => v * 145.0377, (v) => v / 145.0377] },
 
   // results (base: US field units)
   velocity:  { metric: ["m/s", (v) => v * 0.3048], imperial: ["ft/s", id] },
@@ -26,6 +31,8 @@ export const KINDS = {
   degF:      { metric: ["°C", (v) => (v - 32) * 5 / 9], imperial: ["°F", id] },
   degC:      { metric: ["°C", id], imperial: ["°F", (v) => v * 9 / 5 + 32] },
   stressPsi: { metric: ["MPa", (v) => v / 145.0377], imperial: ["psi", id] },
+  lengthFt:  { metric: ["m", (v) => v * 0.3048], imperial: ["ft", id] },
+  speedMs:   { metric: ["m/s", id], imperial: ["ft/s", (v) => v * 3.28084] },
 };
 
 export const unit = (kind, sys) => KINDS[kind][sys][0];

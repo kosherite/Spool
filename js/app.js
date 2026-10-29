@@ -49,7 +49,7 @@ function render() {
 }
 
 function fxToast() {
-  const order = [["rupture", "Rupture"], ["leak", "Flange leak"], ["overstress", "Overstressed"], ["choke", "Choked flow"],
+  const order = calc.alerts || [["rupture", "Rupture"], ["leak", "Flange leak"], ["overstress", "Overstressed"], ["choke", "Choked flow"],
     ["stall", "ΔP exceeds inlet pressure"], ["hydrate", "Hydrates forming"], ["shake", "Above erosional velocity"]];
   const hit = order.find(([k]) => R.fx[k]);
   const key = hit ? hit[0] : "";
@@ -218,7 +218,7 @@ function choose(i) {
   const it = sgItems[i]; if (!it) return;
   showSuggest(false); qEl.value = ""; qEl.blur();
   if (!it.calc) { toast(`${it.name} · not built yet`); return; }
-  if (it.calc !== calc) { calc = it.calc; S = { ...calc.defaults }; eqDone = false; buildForm(); render(); }
+  if (it.calc !== calc) { calc = it.calc; S = { ...calc.defaults }; eqDone = false; lastFx = ""; buildForm(); render(); fit(); }
   history.replaceState(null, "", `#${calc.id}`);
   openPanel(); setTab("res");
 }
@@ -249,7 +249,7 @@ document.addEventListener("pointerdown", (e) => {
   if (!pop.hidden && !pop.contains(e.target) && !setBtn.contains(e.target)) closePop();
   if (!sug.hidden && !$("searchWrap").contains(e.target)) showSuggest(false);
 });
-$("popNote").textContent = "Flow colour: amber above 18 m/s, red at erosional.";
+$("popNote").textContent = "Flow colour: amber above the velocity guideline, red at erosional.";
 
 /* ---------- Toast ---------- */
 let toastT;

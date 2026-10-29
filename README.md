@@ -7,6 +7,7 @@ Oil and gas facilities engineering calculators, each with a live diagram of the 
 | Code   | Calculator      | Standards                                   |
 |--------|-----------------|---------------------------------------------|
 | PIP-01 | Gas Line Sizing | Crane TP-410, API RP 14E, ASME B31.3, B16.5 |
+| PIP-02 | Liquid Line Sizing | Crane TP-410, Colebrook, Hooper 2-K, API RP 14E, ASME B31.3, B16.5 |
 
 ## Run
 
