@@ -58,3 +58,21 @@ export const kContraction = (beta) => 0.5 * (1 - beta * beta);
 export function waveSpeed(Kb, rho, D, e, E = 200e9) {
   return Math.sqrt((Kb / rho) / (1 + (Kb * D) / (E * e)));
 }
+
+/** Hooper (1988) 2-K reducer / expander loss, referenced to the UPSTREAM velocity.
+ *  type "con": D1 large → D2 small; "exp": D1 small → D2 large. f = Darcy friction factor
+ *  of the upstream pipe. theta = included cone angle, degrees (180 = square / sudden). */
+export function kHooperReducer({ type, Re, f, d1, d2, theta = 180 }) {
+  const r = d1 / d2, s = Math.sin((Math.min(180, Math.max(1, theta)) * Math.PI) / 360);
+  if (type === "con") {
+    let K = Re < 2500 ? (1.2 + 160 / Re) * (r ** 4 - 1) : (0.6 + 0.48 * f) * r * r * (r * r - 1);
+    if (theta < 45) K *= 1.6 * s; else if (theta < 180) K *= Math.sqrt(s);
+    return K;
+  }
+  let K = Re < 4000 ? 2 * (1 - r ** 4) : (1 + 0.8 * f) * (1 - r * r) ** 2;
+  if (theta < 45) K *= 2.6 * s;
+  return K;
+}
+
+/** Contraction coefficient at the vena contracta (Weisbach), area ratio a = A_small / A_large. */
+export const contractionCc = (a) => 0.62 + 0.38 * a ** 3;

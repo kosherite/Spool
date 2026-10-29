@@ -2,9 +2,10 @@ import gasLineSizing from "./gas-line-sizing/view.js";
 import liquidLineSizing from "./liquid-line-sizing/view.js";
 import twoPhaseLineSizing from "./two-phase-line-sizing/view.js";
 import flowlineSizing from "./flowline-sizing/view.js";
+import reducerExpansion from "./reducer-expansion/view.js";
 
 /** Live calculators. Add a module here once it is built. */
-export const LIVE = [gasLineSizing, liquidLineSizing, twoPhaseLineSizing, flowlineSizing];
+export const LIVE = [gasLineSizing, liquidLineSizing, twoPhaseLineSizing, flowlineSizing, reducerExpansion];
 
 /** Full catalogue from the source workbooks; entries without a module are not built yet. */
 export const CATALOG = [

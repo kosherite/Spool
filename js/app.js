@@ -70,8 +70,10 @@ function buildForm() {
     ex < 0 ? `<option value="-1" selected>Custom</option>` : ""}${
     calc.examples.map(([n], i) => `<option value="${i}" ${i === ex ? "selected" : ""}>${esc(n)}</option>`).join("")}</select></div>`;
   for (const g of calc.inputs) {
+    const shown = g.fields.filter((f) => !f.show || f.show(S));   // fields can depend on other inputs
+    if (!shown.length) continue;
     h += `<div class="grp">${g.title}</div>`;
-    for (const f of g.fields) {
+    for (const f of shown) {
       const u = f.unit ?? (f.kind ? unit(f.kind, sys) : "");
       h += `<div class="field"><label for="in-${f.id}">${f.label}<span class="u">${u}</span></label>`;
       if (f.options) {
@@ -122,6 +124,7 @@ function onInput(e) {
   }
   if (Object.keys(errs).length) return; // keep last valid result
   S = draft;
+  if (f.options && calc.inputs.some((g) => g.fields.some((x) => x.show))) { buildForm(); render(); return; }
   const caseSel = $("in-case");
   if (caseSel && caseSel.value !== "-1") { // mark as custom without rebuilding the form
     caseSel.insertAdjacentHTML("afterbegin", `<option value="-1">Custom</option>`); caseSel.value = "-1";
